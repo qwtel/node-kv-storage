@@ -1,0 +1,14 @@
+{
+  "name": "node-kv-storage",
+  "version": "1.0.0",
+  "description": "Wrapper around node-persists that conforms to the std:kv-storage interface",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Florian Klampfer <mail@qwtel.com> (https://qwtel.com/)",
+  "license": "MIT",
+  "dependencies": {
+    "node-persist": "^3.0.5"
+  }
+}
