@@ -1,7 +1,7 @@
 {
   "name": "node-kv-storage",
   "version": "1.0.0",
-  "description": "Wrapper around node-persists that conforms to the std:kv-storage interface",
+  "description": "Wrapper around node-persist that conforms to the std:kv-storage interface",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,5 +10,11 @@
   "license": "MIT",
   "dependencies": {
     "node-persist": "^3.0.5"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qwtel/node-kv-storage.git"
+  },
+  "homepage": "https://github.com/qwtel/node-kv-storage#readme"
 }
