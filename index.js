@@ -1,3 +1,4 @@
+const path = require('path');
 const storage = require('node-persist');
 
 function coerceKey (key) {
@@ -59,33 +60,43 @@ function uncoerceKeyInner (key) {
   }
 }
 
-// const _databaseName = new WeakMap();
+const _databaseName = new WeakMap();
 const _databasePromise = new WeakMap();
 
 const DEFAULT_STORAGE_AREA_NAME = 'default';
 
-// const checkFileExists = (filePath) => fs.promises.access(filePath, fs.F_OK).then(() => true).catch(() => false);
-
 function init(name) {
+  const baseDir = process.env.NODE_KV_STORAGE_DIR || global.NODE_KV_STORAGE_DIR || process.cwd();
+  const dirName = name === DEFAULT_STORAGE_AREA_NAME ? 'storage' : name;
   const db = storage.create({
-    dir: '.node-persist/' + (name === DEFAULT_STORAGE_AREA_NAME ? 'storage' : name),
+    dir: path.resolve(baseDir, '.node-persist', dirName),
     stringify: JSON.stringify,
     parse: JSON.parse,
     encoding: 'utf8',
-    logging: false,
+    logging: !!process.env.DEBUG,
     ttl: false,
   })
-  _databasePromise.set(this, db.init().then(() => db))
+  return db.init().then(() => db);
+}
+
+function getDatabasePromise(area) {
+  let promise = _databasePromise.get(area);
+  if (!promise) {
+    const name = _databaseName.get(area);
+    promise = init(name);
+    _databasePromise.set(area, promise);
+  }
+  return promise;
 }
 
 class StorageArea {
   constructor (name) {
-    init.call(this, name);
+    _databaseName.set(this, name);
   }
 
   async set (key, value) {
     const coercedKey = coerceKey(key);
-    const store = await _databasePromise.get(this)
+    const store = await getDatabasePromise(this);
 
     if (value === undefined) {
       await store.removeItem(coercedKey);
@@ -96,45 +107,44 @@ class StorageArea {
 
   async get (key) {
     const coercedKey = coerceKey(key);
-    const store = await _databasePromise.get(this)
-
+    const store = await getDatabasePromise(this);
     return await store.getItem(coercedKey);
   }
 
   async delete (key) {
     const coercedKey = coerceKey(key);
-    const store = await _databasePromise.get(this)
+    const store = await getDatabasePromise(this);
     await store.removeItem(coercedKey);
   }
 
   async clear () {
-    const store = await _databasePromise.get(this)
+    const store = await getDatabasePromise(this);
     await store.clear()
   }
 
   async *keys () {
-    const store = await _databasePromise.get(this)
+    const store = await getDatabasePromise(this);
     // TODO: Do in true async iterative fashion
     const keys = await store.keys()
     for (const key of keys) yield uncoerceKey(key)
   }
 
   async *values () {
-    const store = await _databasePromise.get(this)
+    const store = await getDatabasePromise(this);
     // TODO: Do in true async iterative fashion
     const keys = await store.keys()
     for (const key of keys) yield await store.getItem(key)
   }
 
   async *entries () {
-    const store = await _databasePromise.get(this)
+    const store = await getDatabasePromise(this);
     // TODO: Do in true async iterative fashion
     const keys = await store.keys()
     for (const key of keys) yield [uncoerceKey(key), await store.getItem(key)]
   }
 
   async *[Symbol.asyncIterator]() {
-    const store = await _databasePromise.get(this)
+    const store = await getDatabasePromise(this);
     // TODO: Do in true async iterative fashion
     const keys = await store.keys()
     for (const key of keys) yield [uncoerceKey(key), await store.getItem(key)]
