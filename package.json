@@ -16,5 +16,8 @@
     "type": "git",
     "url": "git+https://github.com/qwtel/node-kv-storage.git"
   },
-  "homepage": "https://github.com/qwtel/node-kv-storage#readme"
+  "homepage": "https://github.com/qwtel/node-kv-storage#readme",
+  "engines": {
+    "node": ">=10.18"
+  }
 }

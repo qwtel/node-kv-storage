@@ -18,6 +18,7 @@ const storage = require('node-kv-storage')
   console.log(await storage.get('test'))
 
   // Compatible with node-persist for string and binary keys
+  await require('node-persist').init()
   await require('node-persist').setItem('foo', { b: 4 })
   console.log(await storage.get('foo'))
 
@@ -50,3 +51,13 @@ const storage = require('node-kv-storage')
 
 * Since there is no IndexedDB in node, `backingStore` is not implemented.
 * Using typed arrays as keys works, but when using `keys()` or `entries()` they will be returned in the form `JSON.parse(JSON.stringify(yourTypedArray))`. Typically this will look like `{ '0': 255, '1': 255, ... }`.
+* Storage areas with the name `default` and `storage` will both map to the directory `storage`.
+
+## Questions
+
+### How do I change the storage directory?
+`node-persist` provides the `dir` option to specify the directory in which to write files. The KV Storage proposal intended for browsers has no such option, and for compatibility this library doesn't provide this option either.
+In my opinion, providing the file path as configuration option is bad idea anyway, instead `node-kv-storage` takes inspiration form the Twelve Factor App takes the base directory from the environment variable `NODE_KV_STORAGE_DIR`.
+
+### How do I change the serialization / deserialization ?
+Currently not implemented

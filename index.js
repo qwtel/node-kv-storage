@@ -41,6 +41,7 @@ function coerceKeyInner (value) {
 }
 
 function uncoerceKey (key) {
+  if (key[0] !== '{') return key;
   try { 
     const parsed = JSON.parse(key);
     return uncoerceKeyInner(parsed);
