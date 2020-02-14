@@ -1,5 +1,8 @@
 const path = require('path');
+const crypto = require('crypto');
 const storage = require('node-persist');
+
+const md5 = key => crypto.createHash('md5').update(key).digest('hex');
 
 function coerceKey (key) {
   const coercedKey = coerceKeyInner(key);
@@ -68,7 +71,7 @@ const DEFAULT_STORAGE_AREA_NAME = 'default';
 
 function init(name) {
   const baseDir = process.env.NODE_KV_STORAGE_DIR || global.NODE_KV_STORAGE_DIR || process.cwd();
-  const dirName = name === DEFAULT_STORAGE_AREA_NAME ? 'storage' : name;
+  const dirName = name === DEFAULT_STORAGE_AREA_NAME ? 'storage' : md5(name);
   const db = storage.create({
     dir: path.resolve(baseDir, '.node-persist', dirName),
     stringify: JSON.stringify,

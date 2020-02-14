@@ -18,11 +18,13 @@ const storage = require('node-kv-storage')
   console.log(await storage.get('test'))
 
   // Compatible with node-persist for string and binary keys
-  await require('node-persist').init()
-  await require('node-persist').setItem('foo', { b: 4 })
+  // Note that this only works for the default storage area
+  const nodePersist = require('node-persist')
+  await nodePersist.init()
+  await nodePersist.setItem('foo', { b: 4 })
   console.log(await storage.get('foo'))
 
-  await require('node-persist').setItem(Buffer.from([0x1, 0x2]), { d: 6 })
+  await nodePersist.setItem(Buffer.from([0x1, 0x2]), { d: 6 })
   console.log(await storage.get(Buffer.from([0x1, 0x2])))
   
   // Also allows Number keys
@@ -51,7 +53,6 @@ const storage = require('node-kv-storage')
 
 * Since there is no IndexedDB in node, `backingStore` is not implemented.
 * Using typed arrays as keys works, but when using `keys()` or `entries()` they will be returned in the form `JSON.parse(JSON.stringify(yourTypedArray))`. Typically this will look like `{ '0': 255, '1': 255, ... }`.
-* Storage areas with the name `default` and `storage` will both map to the directory `storage`.
 
 ## Questions
 
