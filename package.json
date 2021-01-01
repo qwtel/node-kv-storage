@@ -1,17 +1,27 @@
 {
   "name": "node-kv-storage",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Wrapper around node-persist that conforms to the std:kv-storage interface",
+  "type": "module",
   "main": "index.js",
+  "module": "index.js",
+  "files": [
+    "src",
+    "*.js*",
+    "*.d.ts*"
+  ],
+  "types": "./index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Florian Klampfer <mail@qwtel.com> (https://qwtel.com/)",
   "license": "MIT",
   "dependencies": {
-    "node-persist": "^3.0.5"
+    "@types/node-persist": "^3.1.0",
+    "node-persist": "^3.0.5",
+    "typeson": "^5.18.2",
+    "typeson-registry": "^1.0.0-alpha.38"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/qwtel/node-kv-storage.git"

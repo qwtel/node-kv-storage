@@ -49,16 +49,16 @@ const storage = require('node-kv-storage')
 * [Google Developers Tutorial](https://developers.google.com/web/updates/2019/03/kv-storage)
 * [Spec](https://wicg.github.io/kv-storage/)
 
-## Limitations
+<!-- ## Limitations -->
 
-* Since there is no IndexedDB in node, `backingStore` is not implemented.
-* Using typed arrays as keys works, but when using `keys()` or `entries()` they will be returned in the form `JSON.parse(JSON.stringify(yourTypedArray))`. Typically this will look like `{ '0': 255, '1': 255, ... }`.
+<!-- * Since there is no IndexedDB in node, `backingStore` is not implemented.
+* Using typed arrays as keys works, but when using `keys()` or `entries()` they will be returned in the form `JSON.parse(JSON.stringify(yourTypedArray))`. Typically this will look like `{ '0': 255, '1': 255, ... }`. -->
 
-## Questions
+<!-- ## Questions -->
 
-### How do I change the storage directory?
+<!-- ### How do I change the storage directory?
 `node-persist` provides the `dir` option to specify the directory in which to write files. The KV Storage proposal intended for browsers has no such option, and for compatibility this library doesn't provide this option either.
-In my opinion, providing the file path as configuration option is bad idea anyway, instead `node-kv-storage` takes inspiration form the Twelve Factor App takes the base directory from the environment variable `NODE_KV_STORAGE_DIR`.
+In my opinion, providing the file path as configuration option is bad idea anyway, instead `node-kv-storage` takes inspiration form the Twelve Factor App takes the base directory from the environment variable `NODE_KV_STORAGE_DIR`. -->
 
-### How do I change the serialization / deserialization ?
-Currently not implemented
+<!-- ### How do I change the serialization / deserialization ?
+Currently not implemented -->
