@@ -19,7 +19,8 @@
   },
   "scripts": {
     "clean": "rm -rf *.d.ts *.js *.js.map *.d.ts.map cjs",
-    "test": "echo \"Error: no test specified\" && exit 0",
+    "test": "npm run build:mjs && node test/index.js",
+    "prepublishOnly": "npm run build",
     "build": "npm run build:mjs & npm run build:cjs & wait",
     "build:mjs": "tsc -d -p tsconfig.json",
     "build:cjs": "tsc -d -p tsconfig.cjs.json"
@@ -36,7 +37,6 @@
   },
   "devDependencies": {
     "@types/assert": "^1.5.4",
-    "shx": "^0.3.3",
     "typescript": "^4.2.2"
   },
   "repository": {
