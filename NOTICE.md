@@ -4,4 +4,7 @@ which is Apache 2.0 licensed with the following copyright:
 
 > Copyright 2019 Google Inc.
 
-A copy of the [Apache-2.0](licenses/Apache-2.0.md) license is provided as part of this distribution.
+This software uses parts of the [`dumbmatter/fakeIndexedDB`](https://github.com/dumbmatter/fakeIndexedDB) project, 
+which is MIT licensed with the following copyright:
+
+>  Copyright 2017 Jeremy Scheff

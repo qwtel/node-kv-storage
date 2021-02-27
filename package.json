@@ -1,9 +1,9 @@
 {
   "name": "node-kv-storage",
-  "version": "3.0.0",
+  "version": "2.0.0",
   "description": "Wrapper around node-persist that conforms to the std:kv-storage interface",
   "type": "module",
-  "main": "index.js",
+  "main": "cjs/index.js",
   "module": "index.js",
   "files": [
     "src",
@@ -11,16 +11,33 @@
     "*.d.ts*"
   ],
   "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "require": "./cjs/index.js"
+    }
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rm -rf *.d.ts *.js *.js.map *.d.ts.map cjs",
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "build": "npm run build:mjs & npm run build:cjs & wait",
+    "build:mjs": "tsc -d -p tsconfig.json",
+    "build:cjs": "tsc -d -p tsconfig.cjs.json"
   },
   "author": "Florian Klampfer <mail@qwtel.com> (https://qwtel.com/)",
   "license": "MIT",
   "dependencies": {
-    "@types/node-persist": "^3.1.0",
-    "node-persist": "^3.0.5",
+    "@types/node-persist": "^3.1.1",
+    "base64-encoding": "^0.14.3",
+    "kv-storage-interface": "^0.1.1",
+    "node-persist": "^3.1.0",
     "typeson": "^5.18.2",
     "typeson-registry": "^1.0.0-alpha.38"
+  },
+  "devDependencies": {
+    "@types/assert": "^1.5.4",
+    "shx": "^0.3.3",
+    "typescript": "^4.2.2"
   },
   "repository": {
     "type": "git",

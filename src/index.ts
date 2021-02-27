@@ -1,4 +1,6 @@
-import { StorageArea, AllowedKey, RoundTripKey, throwForDisallowedKey, encodeKey, decodeKey } from '@werker/kv-storage-interface';
+import { StorageArea, AllowedKey, Key } from 'kv-storage-interface';
+import { throwForDisallowedKey } from './common.js';
+import { encodeKey, decodeKey } from './key-encoding.js';
 
 import path from 'path';
 import crypto from 'crypto';
@@ -14,19 +16,18 @@ const md5 = key => crypto.createHash('md5').update(key).digest('hex');
 
 const osSafeDirName = (s: string) => {
   s = s.toLowerCase();
-  if (!s.match(/^[a-z0-9-_][a-z0-9-_.]*$/))
-    return md5(s);
+  if (!s.match(/^[a-z0-9-_][a-z0-9-_.]*$/)) return md5(s);
   return s;
 }
 
-export class NodeStorageArea implements StorageArea<Promise<LocalStorage>> {
+export class NodeStorageArea implements StorageArea {
   #dbp: Promise<LocalStorage>;
 
   constructor(name: string, opts: InitOptions = {}) {
     const {
       dir = process.env.NODE_KV_STORAGE_DIR ?? global['NODE_KV_STORAGE_DIR'] ?? `${process.cwd()}/.node-persist`,
-      stringify = JSON.stringify.bind(JSON),
-      parse = JSON.parse.bind(JSON),
+      stringify = x => JSON.stringify(x),
+      parse = x => JSON.parse(x),
       logging = !!process.env.DEBUG,
       ...rest
     } = opts;
@@ -69,7 +70,7 @@ export class NodeStorageArea implements StorageArea<Promise<LocalStorage>> {
     await db.clear();
   }
 
-  async *keys(): AsyncGenerator<RoundTripKey> {
+  async *keys(): AsyncGenerator<Key> {
     const db = await this.#dbp;
     const keys = await db.keys();
     for (const key of keys) {
@@ -85,7 +86,7 @@ export class NodeStorageArea implements StorageArea<Promise<LocalStorage>> {
     }
   }
 
-  async *entries<T>(): AsyncGenerator<[RoundTripKey, T]> {
+  async *entries<T>(): AsyncGenerator<[Key, T]> {
     const db = await this.#dbp;
     const data = await db.data();
     for (const { key, value } of data) {
@@ -98,35 +99,6 @@ export class NodeStorageArea implements StorageArea<Promise<LocalStorage>> {
   }
 }
 
-// export interface KVPacker {
-//   set(kv: KVNamespace, key: string, tson: any, opts?: any): Promise<void>;
-//   get(kv: KVNamespace, key: string, opts?: any): Promise<any>;
-// }
-
-// export class JSONPacker implements KVPacker {
-//   async set(kv: KVNamespace, key: string, tson: any, opts?: KVPutOptions) { 
-//     await kv.put(key, JSON.stringify(tson), opts);
-//   }
-//   async get(kv: KVNamespace, key: string) { 
-//     return await kv.get(key, 'json');
-//   }
-// }
-
-// export interface KVOptions {
-//   packer?: KVPacker
-// }
-
-// export interface KVPutOptions {
-//   expiration?: string | number;
-//   expirationTtl?: string | number;
-// }
-
-// export interface KVListOptions {
-//   prefix?: string
-// }
-
 const storage = new NodeStorageArea('storage');
 
 export default storage;
-
-export * from '@werker/kv-storage-interface';

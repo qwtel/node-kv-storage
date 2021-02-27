@@ -1,17 +1,6 @@
-# Node KV Storage
-
-Wrapper around [`node-persist`](https://www.npmjs.com/package/node-persist) that implements the [`std:kv-storage`](https://wicg.github.io/kv-storage/) interface.
-
-## Why
-
-* Standardized API
-* Easier code sharing with frontend
-* No `await init()`
-
-## How
-
-```js
-const { default: storage, NodeStorageArea } = require('node-kv-storage')
+import assert from 'assert';
+import nodePersist from 'node-persist';
+import storage, { NodeStorageArea } from '../index.js';
 
 ;(async () => {
   await storage.set('test', { a: 3 })
@@ -40,9 +29,3 @@ const { default: storage, NodeStorageArea } = require('node-kv-storage')
   await other.set('test', { i: 11 })
   assert.deepStrictEqual(await other.get('test'), { i: 11 })
 })()
-```
-
-## API
-
-* [Google Developers Tutorial](https://developers.google.com/web/updates/2019/03/kv-storage)
-* [Spec](https://wicg.github.io/kv-storage/)
