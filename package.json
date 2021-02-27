@@ -1,6 +1,6 @@
 {
   "name": "node-kv-storage",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Wrapper around node-persist that conforms to the std:kv-storage interface",
   "type": "module",
   "main": "cjs/index.cjs",
