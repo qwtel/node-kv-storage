@@ -21,7 +21,7 @@
   "scripts": {
     "clean": "shx rm -rf *.d.ts *.js *.js.map *.d.ts.map cjs",
     "test": "npm run build:mjs && node test/index.js",
-    "prepublishOnly": "npm run build",
+    "prepack": "npm run build",
     "build": "npm run build:mjs & npm run build:cjs & wait",
     "build:mjs": "tsc -d -p tsconfig.json",
     "build:cjs": "tsc -d -p tsconfig.cjs.json && npm run sed && npm run mv",
@@ -32,16 +32,16 @@
   "license": "MIT",
   "dependencies": {
     "@types/node-persist": "^3.1.1",
-    "base64-encoding": "^0.14.3",
-    "kv-storage-interface": "^0.1.2",
+    "idb-key-to-string": "^0.2.0",
+    "kv-storage-interface": "^0.2.0",
     "node-persist": "^3.1.0",
     "typeson": "^5.18.2",
-    "typeson-registry": "^1.0.0-alpha.38"
+    "typeson-registry": "^1.0.0-alpha.39"
   },
   "devDependencies": {
     "@types/assert": "^1.5.4",
     "shx": "^0.3.3",
-    "typescript": "^4.2.2"
+    "typescript": "^4.2.3"
   },
   "repository": {
     "type": "git",

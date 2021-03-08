@@ -1,6 +1,5 @@
 import { StorageArea, AllowedKey, Key } from 'kv-storage-interface';
-import { throwForDisallowedKey } from './common.js';
-import { encodeKey, decodeKey } from './key-encoding.js';
+import { encodeKey, decodeKey, throwForDisallowedKey } from 'idb-key-to-string';
 
 import path from 'path';
 import crypto from 'crypto';
